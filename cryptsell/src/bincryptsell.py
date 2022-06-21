@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from tradingview_ta import *
 from datetime import date,datetime
 from time import sleep
@@ -23,7 +25,7 @@ def exitPos(entryprice):
         if (diff > stoploss):
             logger.info("postion Exit")
             try:
-                market_order = client.order_market_buy(symbol=currency,quantity=qty)
+                market_order = client.futures_create_order(symbol=currency,side='BUY',type='MARKET',quantity=qty)
                 logger.info(market_order)
                 exitprice = posExit.get_analysis().indicators["close"]
                 profit = round(entryprice,2)-round(exitprice,2)
@@ -81,19 +83,19 @@ api_key = os.environ.get('binance_api')
 api_secret = os.environ.get('binance_secret')
 client = Client(api_key, api_secret)
 #client.API_URL = 'https://testnet.binance.vision/api'
-client.API_URL = os.environ.get('API_URL')
+#client.API_URL = os.environ.get('API_URL')
 
 #verify account
 #print(client.get_account())
-logger.info(client.get_asset_balance(asset=coin))
+#logger.info(client.get_asset_balance(asset=coin))
 
 # get balances for futures account
 #print(client.futures_account_balance())
 
 # get latest price from Binance API
-curr_price = client.get_symbol_ticker(symbol=currency)
+#curr_price = client.get_symbol_ticker(symbol=currency)
 # print full output (dictionary)
-logger.info(curr_price)
+#logger.info(curr_price)
 
 while True:
     #Instantiate TA_Handler
@@ -113,7 +115,7 @@ while True:
         if (histval < hist):
             closeprice = posHandler.get_analysis().indicators["close"]
             try:
-                market_order = client.order_market_sell(symbol=currency,quantity=qty)
+                market_order = client.futures_create_order(symbol=currency,side='SELL',type='MARKET',quantity=qty)
                 logger.info(market_order)
                 now = datetime.now()
                 logger.warning(f"Sell order executed at closeprice: {str(closeprice)} at {str(now)}")
@@ -129,5 +131,3 @@ while True:
                 # error handling goes here
                 logger.error(e)
 
-#print(posHandler.get_analysis().summary)
-#print(posHandler.get_analysis().indicators["MACD.macd"],posHandler.get_analysis().indicators["MACD.signal"])
