@@ -1,0 +1,33 @@
+version: "3.9"
+    
+services:
+  ETHBUY:
+    image: cryptbuy:1.1
+    volumes:
+      - ethlog_data_buy:/opt/apps/logs
+    restart: always
+    environment:
+      binance_api: xV3jubBXB8ffV5dFEZ3SOmEju4wmdUFjZt9iJLYmxqVFLtjWqE7sLl359qEleZDe
+      binance_secret: XgbzntzsQhqTL8DnPk4KEaY5gEhcQQHdYGviNUrt4CJtAv4kllCl7gZI5lfaRdQb
+      coin: ETH
+      qty: 0.01 
+      hist: 0.75
+      stoploss: -20  
+      API_URL: https://testnet.binance.vision/api
+  ETHSELL:
+    image: cryptsell:1.1
+    volumes:
+      - ethlog_data_sell:/opt/apps/logs
+    restart: always
+    environment:
+      binance_api: xV3jubBXB8ffV5dFEZ3SOmEju4wmdUFjZt9iJLYmxqVFLtjWqE7sLl359qEleZDe
+      binance_secret: XgbzntzsQhqTL8DnPk4KEaY5gEhcQQHdYGviNUrt4CJtAv4kllCl7gZI5lfaRdQb
+      coin: ETH
+      qty: 0.01
+      hist: -0.75
+      stoploss: 20  
+      API_URL: https://testnet.binance.vision/api  
+volumes:
+  ethlog_data_buy: {}
+  ethlog_data_sell: {}
+
